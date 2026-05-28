@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>StreamZest - Premium IPTV Experience</title>
+    <title>PlayCast - Premium IPTV Experience</title>
     
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* Modern CSS reset and smooth transitions */
         * {
             margin: 0;
             padding: 0;
@@ -37,10 +36,9 @@
                 radial-gradient(circle at 10% 20%, rgba(112, 0, 255, 0.15) 0%, transparent 40%),
                 radial-gradient(circle at 90% 80%, rgba(255, 42, 95, 0.12) 0%, transparent 40%);
             background-attachment: fixed;
-            padding-bottom: 30px;
+            padding-bottom: 90px;
         }
 
-        /* Premium Floating Header */
         .navbar {
             background: rgba(17, 17, 34, 0.75);
             backdrop-filter: blur(15px);
@@ -87,7 +85,6 @@
             100% { opacity: 0.6; box-shadow: 0 0 10px rgba(255, 42, 95, 0.4); }
         }
 
-        /* Container & Grid Layout */
         .app-container {
             max-width: 1400px;
             margin: 15px auto;
@@ -97,7 +94,6 @@
             gap: 20px;
         }
 
-        /* Advertisement Spaces (Fully Fluid for Mobile) */
         .ad-container {
             background: linear-gradient(135deg, rgba(17, 17, 34, 0.6), rgba(30, 30, 50, 0.6));
             border: 1px dashed rgba(112, 0, 255, 0.3);
@@ -118,26 +114,26 @@
 
         .top-banner-ad {
             height: auto;
-            min-height: 75px;
-            padding: 10px;
+            min-height: 95px;
+            padding: 5px;
         }
 
         .sidebar-ad {
-            height: 250px;
-            padding: 15px;
+            height: 260px;
+            padding: 5px;
         }
 
-        /* Responsive Main Layout Matrix */
+        .in-feed-ad {
+            min-height: 80px;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
         .theater-section {
             display: grid;
             grid-template-columns: 3fr 1fr;
             gap: 20px;
-        }
-
-        /* Futuristic Player Box */
-        .player-column {
-            display: flex;
-            flex-direction: column;
         }
 
         .video-player-wrapper {
@@ -165,7 +161,6 @@
             object-fit: contain;
         }
 
-        /* Now Playing Info Bar */
         .player-info-bar {
             background: var(--card-bg);
             padding: 15px;
@@ -174,14 +169,15 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            gap: 15px;
         }
 
         .current-meta {
             display: flex;
             align-items: center;
             gap: 12px;
-            width: 100%;
+            overflow: hidden;
+            flex-grow: 1;
         }
 
         .current-logo {
@@ -213,7 +209,28 @@
             margin-top: 2px;
         }
 
-        /* Filter Controls Area (Auto Wrap for small displays) */
+        .fullscreen-btn {
+            background: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow));
+            color: #fff;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(255, 42, 95, 0.25);
+        }
+
+        .fullscreen-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 42, 95, 0.4);
+        }
+
         .tabs-and-search-container {
             display: flex;
             justify-content: space-between;
@@ -229,7 +246,6 @@
         .category-tabs {
             display: flex;
             gap: 8px;
-            width: auto;
         }
 
         .tab-button {
@@ -260,7 +276,6 @@
             box-shadow: 0 5px 15px rgba(255, 42, 95, 0.3);
         }
 
-        /* Glassmorphic Search Container */
         .search-wrapper {
             position: relative;
             width: 100%;
@@ -293,7 +308,6 @@
             background: rgba(255, 255, 255, 0.08);
         }
 
-        /* Grid Section for Channels */
         .channels-display-section {
             display: flex;
             flex-direction: column;
@@ -319,14 +333,12 @@
             border-radius: 2px;
         }
 
-        /* AUTO RESPONSIVE GRID MATRIX FOR HARDWARE CHANNELS */
         .channel-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
             gap: 15px;
         }
 
-        /* Premium Netflix style Channel Cards */
         .channel-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -377,7 +389,6 @@
             object-fit: contain;
             margin-bottom: 10px;
             filter: drop-shadow(0px 3px 6px rgba(0,0,0,0.3));
-            transition: 0.3s;
         }
 
         .channel-card span {
@@ -395,62 +406,75 @@
             color: #fff;
         }
 
-        /* --- BREAKPOINTS / MEDIA QUERIES FOR MAX-FIT RESPONSIVENESS --- */
-        
-        /* 1. For Medium Screens (Tablets / Laptops below 992px) */
+        .sticky-bottom-ad {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 728px;
+            background: rgba(17, 17, 34, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border-color);
+            z-index: 2000;
+            padding: 5px;
+            text-align: center;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-ad-btn {
+            position: absolute;
+            top: -12px;
+            right: 15px;
+            background: var(--primary-glow);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 22px;
+            box-shadow: 0 2px 8px rgba(255, 42, 95, 0.4);
+            z-index: 2100;
+        }
+
         @media (max-width: 992px) {
             .theater-section {
-                grid-template-columns: 1fr; /* Sidebar collapses to stack below player */
+                grid-template-columns: 1fr;
             }
             .sidebar-ad {
-                height: 150px; /* Adjust sidebar ad ratio for horizontal layout */
-            }
-        }
-
-        /* 2. For Small Mobile Screens (Below 768px) */
-        @media (max-width: 768px) {
-            .navbar {
-                padding: 10px 15px;
-            }
-            .brand-logo {
-                font-size: 19px;
-            }
-            .tabs-and-search-container {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .category-tabs {
+                height: auto;
+                min-height: 260px;
                 width: 100%;
-                overflow-x: auto; /* Enables horizontal scroll for tabs on small mobile */
-                padding-bottom: 4px;
-                -webkit-overflow-scrolling: touch;
-            }
-            .tab-button {
-                flex: 1;
-                justify-content: center;
-                padding: 10px 12px;
-                font-size: 12px;
-            }
-            .search-wrapper {
-                max-width: 100%;
-            }
-            .channel-grid {
-                grid-template-columns: repeat(auto-fill, minmax(105px, 1fr)); /* Compact view on small smartphones */
-                gap: 10px;
-            }
-            .channel-card {
-                height: 105px;
-                padding: 10px 6px;
-            }
-            .channel-card img {
-                height: 42px;
-            }
-            .channel-card span {
-                font-size: 11px;
+                max-width: 300px;
+                margin: 0 auto;
             }
         }
 
-        /* Footer */
+        @media (max-width: 768px) {
+            .navbar { padding: 10px 15px; }
+            .brand-logo { font-size: 19px; }
+            .tabs-and-search-container { flex-direction: column; align-items: stretch; }
+            .category-tabs { width: 100%; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch; }
+            .tab-button { flex: 1; justify-content: center; padding: 10px 12px; font-size: 12px; }
+            .search-wrapper { max-width: 100%; }
+            .channel-grid { grid-template-columns: repeat(auto-fill, minmax(105px, 1fr)); gap: 10px; }
+            .channel-card { height: 105px; padding: 10px 6px; }
+            .channel-card img { height: 42px; }
+            .channel-card span { font-size: 11px; }
+            .sticky-bottom-ad { max-width: 100%; border-radius: 0; }
+            .player-info-bar { flex-direction: row; justify-content: space-between; padding: 12px; }
+            .fullscreen-btn { padding: 8px 12px; font-size: 12px; }
+        }
+
         .app-footer {
             text-align: center;
             padding: 30px 15px;
@@ -471,7 +495,7 @@
 
     <nav class="navbar">
         <div class="brand-logo">
-            <i class="fa-solid fa-bolt-lightning"></i> StreamZest
+            <i class="fa-solid fa-bolt-lightning"></i> PlayCast
         </div>
         <div class="live-badge">
             <i class="fa-solid fa-circle" style="font-size: 7px; margin-right: 3px; vertical-align: middle;"></i> Live TV
@@ -479,14 +503,20 @@
     </nav>
 
     <div class="app-container">
-        
         <div class="ad-container top-banner-ad">
-            <div class="ad-label">Advertisement</div>
-            <span style="opacity: 0.6; font-size: 11px;"><i class="fa-solid fa-rectangle-ad"></i> Responsive Top Banner Ad Slot</span>
+            <script>
+              atOptions = {
+                'key' : '918582faac62ca71eabe5fac4068d8a4',
+                'format' : 'iframe',
+                'height' : 60,
+                'width' : 468,
+                'params' : {}
+              };
+            </script>
+            <script src="https://www.highperformanceformat.com/918582faac62ca71eabe5fac4068d8a4/invoke.js"></script>
         </div>
 
         <div class="theater-section">
-            
             <div class="player-column">
                 <div class="video-player-wrapper">
                     <video id="videoPlayer" controls autoplay playsinline></video>
@@ -500,25 +530,38 @@
                             <div class="current-status"><i class="fa-solid fa-signal"></i> High Definition Streaming</div>
                         </div>
                     </div>
+                    <button class="fullscreen-btn" onclick="toggleFullscreen()">
+                        <i class="fa-solid fa-expand"></i> Full Screen
+                    </button>
                 </div>
             </div>
             
             <div class="sidebar-column">
                 <div class="ad-container sidebar-ad">
-                    <div class="ad-label">Sponsored</div>
-                    <span style="opacity: 0.6; font-size: 11px;"><i class="fa-solid fa-rectangle-ad"></i> Sidebar Square Ad Slot</span>
+                    <script>
+                      atOptions = {
+                        'key' : '918582faac62ca71eabe5fac4068d8a4',
+                        'format' : 'iframe',
+                        'height' : 60,
+                        'width' : 468,
+                        'params' : {}
+                      };
+                    </script>
+                    <script src="https://www.highperformanceformat.com/918582faac62ca71eabe5fac4068d8a4/invoke.js"></script>
                 </div>
             </div>
-
         </div>
 
         <div class="tabs-and-search-container">
             <div class="category-tabs">
-                <button class="tab-button active" onclick="switchPlaylist('playlist1')">
-                    <i class="fa-solid fa-tv"></i> জেনারেল টিভি (Media 1)
+                <button id="btn-bangladeshi" class="tab-button active" onclick="switchPlaylist('bangladeshi')">
+                    <i class="fa-solid fa-flag"></i> বাংলাদেশী টিভি
                 </button>
-                <button class="tab-button" onclick="switchPlaylist('playlist2')">
-                    <i class="fa-solid fa-trophy"></i> স্পোর্টস ও প্রিমিয়াম (Media 2)
+                <button id="btn-indian" class="tab-button" onclick="switchPlaylist('indian')">
+                    <i class="fa-solid fa-tv"></i> ইন্ডিয়ান টিভি
+                </button>
+                <button id="btn-sports" class="tab-button" onclick="switchPlaylist('sports')">
+                    <i class="fa-solid fa-trophy"></i> স্পোর্টস ও প্রিমিয়াম
                 </button>
             </div>
 
@@ -528,23 +571,51 @@
             </div>
         </div>
 
+        <div class="ad-container in-feed-ad">
+            <p style="color: var(--text-muted); font-size: 11px; margin-bottom: 4px;"><i class="fa-solid fa-rectangle-ad"></i> Sponsored Advertisement</p>
+            <script>
+              atOptions = {
+                'key' : '918582faac62ca71eabe5fac4068d8a4',
+                'format' : 'iframe',
+                'height' : 60,
+                'width' : 468,
+                'params' : {}
+              };
+            </script>
+            <script src="https://www.highperformanceformat.com/918582faac62ca71eabe5fac4068d8a4/invoke.js"></script>
+        </div>
+
         <div class="channels-display-section">
             <div class="section-heading">উপলব্ধ চ্যানেলসমূহ</div>
-            <div class="channel-grid" id="channelGrid">
-                </div>
+            <div class="channel-grid" id="channelGrid"></div>
         </div>
 
     </div>
 
     <footer class="app-footer">
-        &copy; 2026 <a href="#">StreamZest</a> | All Rights Reserved. Fully Responsive Architecture.
+        &copy; 2026 <a href="#">PlayCast</a> | All Rights Reserved. Fully Responsive Architecture.
     </footer>
 
+    <div class="sticky-bottom-ad" id="stickyBottomAd">
+        <button class="close-ad-btn" onclick="document.getElementById('stickyBottomAd').style.display='none'">×</button>
+        <p style="color: var(--text-muted); font-size: 10px; margin-bottom: 2px;">Advertisement</p>
+        <script>
+          atOptions = {
+            'key' : '918582faac62ca71eabe5fac4068d8a4',
+            'format' : 'iframe',
+            'height' : 60,
+            'width' : 468,
+            'params' : {}
+          };
+        </script>
+        <script src="https://www.highperformanceformat.com/918582faac62ca71eabe5fac4068d8a4/invoke.js"></script>
+    </div>
+
     <script>
-        // ⚠️ আপনার গিটহাবের ইউজারনেম দিয়ে নিচের "YOUR_USERNAME" অংশটুকু পরিবর্তন করে দিন
         const playlists = {
-            playlist1: 'https://raw.githubusercontent.com/junaidthakur/streamzest/main/media1.m3u',
-            playlist2: 'https://raw.githubusercontent.com/junaidthakur/streamzest/main/media2.m3u'
+            bangladeshi: 'https://raw.githubusercontent.com/junaidthakur/PlayCast/main/bangladeshi.m3u',
+            indian: 'media1.m3u',
+            sports: 'media2.m3u'
         };
 
         let channelsList = [];
@@ -553,57 +624,136 @@
         const currentTitle = document.getElementById('currentTitle');
         let hls = null;
 
-        // মেইন প্লেলিস্ট ফেচ ফাংশন
         async function loadPlaylist(url) {
             const grid = document.getElementById('channelGrid');
             grid.innerHTML = "<p style='text-align: center; grid-column: 1/-1; color: var(--text-muted); padding: 25px;'><i class='fa-solid fa-spinner fa-spin'></i> চ্যানেল লোড হচ্ছে...</p>";
             
             try {
-                const response = await fetch(url);
+                const finalUrl = url + '?t=' + new Date().getTime();
+                const response = await fetch(finalUrl);
+                
+                if(!response.ok) throw new Error("HTTP error: " + response.status);
+                
                 const data = await response.text();
                 channelsList = []; 
                 parseM3U(data);
             } catch (err) {
-                grid.innerHTML = "<p style='color:#ff2a5f; text-align:center; grid-column:1/-1; padding: 15px;'><i class='fa-solid fa-circle-exclamation'></i> প্লেলিস্ট লোড করা যায়নি! গিটহাবের Raw লিংক চেক করুন।</p>";
+                console.error("Error loading playlist:", err);
+                grid.innerHTML = "<p style='color:#ff2a5f; text-align:center; grid-column:1/-1; padding: 15px;'><i class='fa-solid fa-circle-exclamation'></i> প্লেলিস্ট লোড করতে সমস্যা হচ্ছে! গিটহাবের ফাইল বা ইন্টারনেট কানেকশন চেক করুন।</p>";
             }
         }
 
-        // M3U প্রসেসর ইঞ্জিন
         function parseM3U(text) {
-            const lines = text.split('\n');
-            let current = null;
+            const lines = text.split(/\r?\n/);
+            let currentName = "";
+            let currentLogo = "https://via.placeholder.com/150x90?text=Live+TV";
 
             for (let i = 0; i < lines.length; i++) {
                 const line = lines[i].trim();
-                if (line.startsWith('#EXTINF:')) {
-                    const name = line.split(',')[line.split(',').length - 1] || "Live TV Channel";
-                    let logo = 'https://via.placeholder.com/150x90?text=Live+TV';
+                if (!line) continue;
+
+                if (line.toUpperCase().startsWith('#EXTINF:')) {
+                    const logoMatch = line.match(/tvg-logo=["']([^"']*)["']/i);
+                    currentLogo = (logoMatch && logoMatch[1]) ? logoMatch[1] : "https://via.placeholder.com/150x90?text=Live+TV";
                     
-                    const logoMatch = line.match(/tvg-logo="(.*?)"/);
-                    if (logoMatch && logoMatch[1]) logo = logoMatch[1];
+                    const commaIndex = line.lastIndexOf(',');
+                    currentName = (commaIndex !== -1) ? line.substring(commaIndex + 1).trim() : "Live TV Channel";
+                } 
+                else if (!line.startsWith('#')) {
+                    if (!currentName) currentName = "Live Channel " + (channelsList.length + 1);
                     
-                    current = { name, logo, url: '' };
-                } else if (line && !line.startsWith('#') && current) {
-                    current.url = line;
-                    channelsList.push(current);
-                    current = null;
+                    channelsList.push({
+                        name: currentName,
+                        logo: currentLogo,
+                        url: line
+                    });
+                    
+                    currentName = "";
+                    currentLogo = "https://via.placeholder.com/150x90?text=Live+TV";
                 }
             }
+            
             displayChannels(channelsList);
             if(channelsList.length > 0) playStream(0);
         }
 
-        // রেসপনসিভ কার্ড রেন্ডারিং ইন্টারফেস
         function displayChannels(channels) {
             const grid = document.getElementById('channelGrid');
             grid.innerHTML = '';
             
             if(channels.length === 0) {
-                grid.innerHTML = "<p style='text-align: center; grid-column: 1/-1; color: var(--text-muted); padding: 15px;'>কোনো চ্যানেল পাওয়া যায়নি!</p>";
+                grid.innerHTML = "<p style='text-align: center; grid-column: 1/-1; color: var(--text-muted); padding: 25px;'>কোনো চ্যানেল পাওয়া যায়নি!</p>";
                 return;
             }
 
             channels.forEach((ch, idx) => {
                 const realIndex = channelsList.indexOf(ch);
                 const card = document.createElement('div');
-                card.classN
+                card.className = 'channel-card';
+                card.setAttribute('id', 'ch-' + realIndex);
+                card.onclick = () => playStream(realIndex); 
+                
+                card.innerHTML = `
+                    <img src="${ch.logo}" onerror="this.src='https://via.placeholder.com/150x90?text=${encodeURIComponent(ch.name)}'">
+                    <span>${ch.name}</span>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function playStream(index) {
+            const channel = channelsList[index];
+            if (!channel) return;
+
+            currentTitle.innerText = channel.name;
+            currentLogo.src = channel.logo;
+            currentLogo.onerror = () => { currentLogo.src = 'https://via.placeholder.com/100x60?text=TV'; };
+
+            document.querySelectorAll('.channel-card').forEach(c => c.classList.remove('active'));
+            const activeCard = document.getElementById('ch-' + index);
+            if(activeCard) activeCard.classList.add('active');
+
+            if (hls) hls.destroy();
+
+            if (Hls.isSupported()) {
+                hls = new Hls({ maxMaxBufferLength: 10 });
+                hls.loadSource(channel.url);
+                hls.attachMedia(video);
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = channel.url;
+            }
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) {  
+                if (video.requestFullscreen) { video.requestFullscreen(); } 
+                else if (video.msRequestFullscreen) { video.msRequestFullscreen(); } 
+                else if (video.mozRequestFullScreen) { video.mozRequestFullScreen(); } 
+                else if (video.webkitFullscreen) { video.webkitFullscreen(); } 
+                else if (video.webkitEnterFullscreen) { video.webkitEnterFullscreen(); }
+            } else {
+                if (document.exitFullscreen) { document.exitFullscreen(); } 
+                else if (document.msExitFullscreen) { document.msExitFullscreen(); } 
+                else if (document.mozCancelFullScreen) { document.mozCancelFullScreen(); } 
+                else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
+            }
+        }
+
+        function switchPlaylist(key) {
+            document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+            const activeBtn = document.getElementById('btn-' + key);
+            if (activeBtn) activeBtn.classList.add('active');
+            loadPlaylist(playlists[key]);
+        }
+
+        function searchChannels() {
+            const query = document.getElementById('searchBox').value.toLowerCase();
+            const filtered = channelsList.filter(ch => ch.name.toLowerCase().includes(query));
+            displayChannels(filtered);
+        }
+
+        window.onload = () => loadPlaylist(playlists.bangladeshi);
+    </script>
+
+</body>
+</html>
